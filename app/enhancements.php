@@ -50,6 +50,17 @@ function enhance_site_html(string $html, string $path): string {
     $html = str_replace('<body class="', '<body class="visual-v4 ', $html);
     if (str_contains($html, '<body>')) $html = str_replace('<body>', '<body class="visual-v4">', $html);
 
+    $html = str_replace(
+        '<form class="lead-form" id="lead-form"',
+        '<form class="lead-form" id="lead-form" toolname="request_legal_consultation" tooldescription="Submits a legal consultation request to Salwa Ahmed Law for review and follow-up"',
+        $html
+    );
+    $html = str_replace('name="name" type="text"', 'name="name" toolparamdescription="Full name of the person requesting legal consultation" type="text"', $html);
+    $html = str_replace('name="phone" type="tel"', 'name="phone" toolparamdescription="Phone number for follow-up, in local or international format" type="tel"', $html);
+    $html = str_replace('<select name="service"', '<select name="service" toolparamdescription="Legal service category requested"', $html);
+    $html = str_replace('<textarea name="message"', '<textarea name="message" toolparamdescription="Optional short summary of the legal matter and consultation goal"', $html);
+    $html = str_replace('name="consent" type="checkbox"', 'name="consent" toolparamdescription="Confirms consent to use the submitted data to respond to the request under the privacy policy" type="checkbox"', $html);
+
     $html = str_replace('/assets/logo-white.svg', '/assets/logo-header.svg?v=20260902-perf2', $html);
     $html = str_replace('/assets/site.js"', '/assets/site.js?v=20260902-perf2"', $html);
 
