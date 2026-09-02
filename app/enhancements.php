@@ -4,9 +4,9 @@ declare(strict_types=1);
 function visual_v4_authority_html(string $path): string {
     $items = [
         'moj' => '<div class="authority-v4 authority-v4-moj"><div class="authority-mark" aria-hidden="true">⚖</div><div class="authority-copy"><strong>وزارة العدل</strong><small>المرجع العدلي الرسمي</small></div></div>',
-        'sba' => '<div class="authority-v4 authority-v4-sba"><div class="authority-logo-box authority-logo-dark"><img src="https://sba.gov.sa/wp-content/uploads/2022/03/whitelogo-2.png" width="132" height="64" loading="lazy" decoding="async" alt="شعار الهيئة السعودية للمحامين" onerror="this.style.display=\'none\'"></div><div class="authority-copy"><strong>الهيئة السعودية للمحامين</strong><small>الجهة المهنية ذات الصلة</small></div></div>',
-        'hrsd' => '<div class="authority-v4 authority-v4-hrsd"><div class="authority-logo-box"><img src="https://www.hrsd.gov.sa/themes/custom/hrsd_saud/logo.svg" width="144" height="60" loading="lazy" decoding="async" alt="شعار وزارة الموارد البشرية والتنمية الاجتماعية" onerror="this.style.display=\'none\'"></div><div class="authority-copy"><strong>وزارة الموارد البشرية والتنمية الاجتماعية</strong><small>مرجع أنظمة وعلاقات العمل</small></div></div>',
-        'saip' => '<div class="authority-v4 authority-v4-saip"><div class="authority-logo-box"><img src="https://www.saip.gov.sa/_next/image?q=75&amp;url=%2Fimages%2Fsaip-logo-color.svg&amp;w=3840" width="144" height="60" loading="lazy" decoding="async" alt="شعار الهيئة السعودية للملكية الفكرية" onerror="this.style.display=\'none\'"></div><div class="authority-copy"><strong>الهيئة السعودية للملكية الفكرية</strong><small>الجهة المختصة بالملكية الفكرية</small></div></div>',
+        'sba' => '<div class="authority-v4 authority-v4-sba"><div class="authority-logo-box authority-logo-dark"><img src="/assets/authority-sba.webp?v=20260902-perf1" width="132" height="64" loading="lazy" decoding="async" fetchpriority="low" alt="شعار الهيئة السعودية للمحامين"></div><div class="authority-copy"><strong>الهيئة السعودية للمحامين</strong><small>الجهة المهنية ذات الصلة</small></div></div>',
+        'hrsd' => '<div class="authority-v4 authority-v4-hrsd"><div class="authority-logo-box"><img src="/assets/authority-hrsd.svg?v=20260902-perf1" width="144" height="60" loading="lazy" decoding="async" fetchpriority="low" alt="شعار وزارة الموارد البشرية والتنمية الاجتماعية"></div><div class="authority-copy"><strong>وزارة الموارد البشرية والتنمية الاجتماعية</strong><small>مرجع أنظمة وعلاقات العمل</small></div></div>',
+        'saip' => '<div class="authority-v4 authority-v4-saip"><div class="authority-logo-box"><img src="https://www.saip.gov.sa/_next/image?q=75&amp;url=%2Fimages%2Fsaip-logo-color.svg&amp;w=3840" width="144" height="60" loading="lazy" decoding="async" fetchpriority="low" alt="شعار الهيئة السعودية للملكية الفكرية" onerror="this.style.display=\'none\'"></div><div class="authority-copy"><strong>الهيئة السعودية للملكية الفكرية</strong><small>الجهة المختصة بالملكية الفكرية</small></div></div>',
     ];
 
     $keys = ['moj','sba'];
@@ -23,16 +23,32 @@ function visual_v4_authority_html(string $path): string {
 function enhance_site_html(string $html, string $path): string {
     if ($html === '' || stripos($html, '<html') === false) return $html;
 
+    $html = str_replace('<link rel="preconnect" href="https://fonts.googleapis.com">', '', $html);
+    $html = str_replace('<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>', '', $html);
     $html = str_replace('<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@400;500;600;700&display=swap" rel="stylesheet">', '', $html);
-    $assets = '<link rel="icon" type="image/svg+xml" href="/assets/favicon.svg">'
-        . '<link href="https://fonts.googleapis.com/css2?family=Noto+Kufi+Arabic:wght@400;600;700&display=swap" rel="stylesheet">'
-        . '<link rel="stylesheet" href="/assets/visual-v4.css?v=20260902-2">'
-        . '<link rel="stylesheet" href="/assets/visual-v5.css?v=20260902-3">';
+    $html = str_replace('<link rel="stylesheet" href="/assets/site.css">', '', $html);
+
+    $heroAsset = match ($path) {
+        '/' => '/assets/hero-home-v5.svg',
+        '/استشارات-قانونية/' => '/assets/hero-consult-v5.svg',
+        '/محامي-عقود/' => '/assets/hero-contracts-v5.svg',
+        '/محامي-قضايا-عمالية/' => '/assets/hero-labor-v5.svg',
+        '/محامي-احوال-شخصية/' => '/assets/hero-family-v5.svg',
+        '/ملكية-فكرية/' => '/assets/hero-ip-v5.svg',
+        default => '',
+    };
+
+    $heroPreload = $heroAsset !== '' ? '<link rel="preload" as="image" type="image/svg+xml" fetchpriority="high" href="'.$heroAsset.'">' : '';
+    $assets = '<link rel="icon" type="image/svg+xml" href="/assets/favicon.svg?v=20260902-perf1">'
+        . '<link rel="preload" href="/assets/fonts/noto-kufi-arabic-arabic.woff2" as="font" type="font/woff2" crossorigin>'
+        . $heroPreload
+        . '<link rel="stylesheet" href="/assets/site.bundle.css?v=20260902-perf1">';
     $html = str_replace('</head>', $assets.'</head>', $html);
     $html = str_replace('<body class="', '<body class="visual-v4 ', $html);
     if (str_contains($html, '<body>')) $html = str_replace('<body>', '<body class="visual-v4">', $html);
 
-    $html = str_replace('/assets/logo-white.svg', '/assets/logo-header.svg', $html);
+    $html = str_replace('/assets/logo-white.svg', '/assets/logo-header.svg?v=20260902-perf1', $html);
+    $html = str_replace('/assets/site.js"', '/assets/site.js?v=20260902-perf1"', $html);
 
     if (str_contains($html, 'class="authority-band"')) {
         $html = preg_replace('#<section class="authority-band".*?</section>#s', visual_v4_authority_html($path), $html, 1) ?? $html;
