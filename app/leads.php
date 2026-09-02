@@ -49,7 +49,10 @@ function stored_leads(): Generator {
         if (!flock($handle, LOCK_SH)) return;
         while (($line = fgets($handle)) !== false) {
             $row = json_decode($line, true);
-            if (is_array($row)) yield $row;
+            if (!is_array($row)) continue;
+            if (($row['_type'] ?? '') === 'runtime_config') continue;
+            if (($row['id'] ?? '') === '') continue;
+            yield $row;
         }
         flock($handle, LOCK_UN);
     } finally {
