@@ -24,7 +24,8 @@ function enhance_site_html(string $html, string $path): string {
     if ($html === '' || stripos($html, '<html') === false) return $html;
 
     $html = str_replace('<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@400;500;600;700&display=swap" rel="stylesheet">', '', $html);
-    $assets = '<link href="https://fonts.googleapis.com/css2?family=Noto+Kufi+Arabic:wght@400;600;700&display=swap" rel="stylesheet">'
+    $assets = '<link rel="icon" type="image/svg+xml" href="/assets/favicon.svg">'
+        . '<link href="https://fonts.googleapis.com/css2?family=Noto+Kufi+Arabic:wght@400;600;700&display=swap" rel="stylesheet">'
         . '<link rel="stylesheet" href="/assets/visual-v4.css?v=20260902-2">'
         . '<link rel="stylesheet" href="/assets/visual-v5.css?v=20260902-2">';
     $html = str_replace('</head>', $assets.'</head>', $html);
