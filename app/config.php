@@ -4,11 +4,28 @@ declare(strict_types=1);
 const BRAND_NAME_AR = 'المحامية سلوى أحمد';
 const BRAND_NAME_EN = 'Salwa Ahmed Law';
 const PRIVACY_VERSION = '2026-09-02-v1';
-const BUILD_ID = 'salwa-law-2026-09-02-v2';
+const BUILD_ID = 'salwa-law-2026-09-02-v3';
+
+function runtime_values(): array {
+    static $values = null;
+    if (is_array($values)) return $values;
+    $values = [];
+    $path = dirname(__DIR__) . '/private/runtime.env';
+    if (!is_file($path) || !is_readable($path)) return $values;
+    foreach (file($path, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES) ?: [] as $line) {
+        $line = trim($line);
+        if ($line === '' || str_starts_with($line, '#') || !str_contains($line, '=')) continue;
+        [$k, $v] = array_map('trim', explode('=', $line, 2));
+        if ($k !== '') $values[$k] = $v;
+    }
+    return $values;
+}
 
 function env_value(string $key, ?string $default = null): ?string {
     $value = getenv($key);
-    return ($value === false || $value === '') ? $default : $value;
+    if ($value !== false && $value !== '') return $value;
+    $runtime = runtime_values();
+    return ($runtime[$key] ?? '') !== '' ? (string)$runtime[$key] : $default;
 }
 
 function site_config(): array {
