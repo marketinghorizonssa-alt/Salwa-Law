@@ -3,17 +3,19 @@ declare(strict_types=1);
 
 /**
  * Load server-only runtime secrets before the public application config.
- * On this Hostinger runtime, a protected PHP config file inside the document
- * root is the most reliable source. Apache denies direct HTTP access to it.
+ * Hostinger/Apache may expose SetEnv variables through $_SERVER rather than
+ * getenv(), so bridge that value into the PHP process first.
  */
 function bootstrap_runtime_secrets(): void {
     $baseDir = dirname(__DIR__);
-    $token = '';
+    $token = trim((string)($_SERVER['SALWA_FEED_TOKEN'] ?? $_ENV['SALWA_FEED_TOKEN'] ?? ''));
 
-    $protectedPhpConfig = $baseDir . '/public/runtime-config.php';
-    if (is_file($protectedPhpConfig) && is_readable($protectedPhpConfig)) {
-        $data = require $protectedPhpConfig;
-        if (is_array($data)) $token = trim((string)($data['feed_token'] ?? ''));
+    if ($token === '') {
+        $protectedPhpConfig = $baseDir . '/public/runtime-config.php';
+        if (is_file($protectedPhpConfig) && is_readable($protectedPhpConfig)) {
+            $data = require $protectedPhpConfig;
+            if (is_array($data)) $token = trim((string)($data['feed_token'] ?? ''));
+        }
     }
 
     if ($token === '') {
