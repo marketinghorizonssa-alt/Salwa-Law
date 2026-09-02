@@ -2,9 +2,12 @@
 
 Arabic-first, campaign-ready legal website for Salwa Ahmed.
 
-## Target
-- Production target: `https://salwalaw.hositee.com`
-- Reference UX only: ENKAF repository/site. No ENKAF runtime dependency.
+## Production
+- Production URL: `https://salwalaw.hositee.com`
+- Current visual layer: `v4`
+- Reference UX: ENKAF / Atheer patterns only; no runtime dependency on either client.
+- Typography: IBM Plex Sans Arabic for body copy and Noto Kufi Arabic for headings and primary actions.
+- Each priority landing page has a lightweight service-specific legal background while preserving the form-first RTL layout.
 
 ## Pages
 - `/`
@@ -23,7 +26,7 @@ Arabic-first, campaign-ready legal website for Salwa Ahmed.
 - No PII is placed in the thank-you URL.
 
 ## Lead storage
-Default storage is an append-only private JSONL file outside the public root, protected with server-side file locking. `SALWA_DATA_DIR` must point to a private writable directory on production. Optional token-protected CSV feed is disabled until `SALWA_FEED_TOKEN` is configured.
+Lead data is stored in the private Hostinger runtime outside the public document root. The token-protected CSV feed supplies the hidden Google Sheets source tab. Runtime secrets and customer data are never committed to GitHub.
 
 ## Release safety
-Keep `SALWA_REVIEW_MODE=true` on staging/review. Set to `false` only for an approved production release after QA.
+GitHub is the source of truth. Hostinger deploys an exact recorded commit and exposes it through `/healthz/`. Production is indexable only when `SALWA_REVIEW_MODE=false`. Visual changes must preserve stable URLs, metadata, form field names, attribution fields, and the existing conversion event contract.
