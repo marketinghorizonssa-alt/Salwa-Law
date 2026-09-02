@@ -18,6 +18,18 @@ cp -R "$ROOT/public" "$BASE/public"
 cp -R "$ROOT/scripts" "$BASE/scripts"
 cp "$ROOT/README.md" "$BASE/README.md"
 printf '%s\n' "$COMMIT" > "$BASE/.deployed-commit"
+
+# Keep runtime secrets server-side. Mirror the feed token into the web-server
+# environment at deploy time so PHP-FPM can read it even when getenv() does not
+# inherit shell variables. The secret is never committed to GitHub.
+RUNTIME_ENV="$BASE/private/runtime.env"
+if [ -f "$RUNTIME_ENV" ]; then
+  FEED_TOKEN=$(sed -n 's/^SALWA_FEED_TOKEN=//p' "$RUNTIME_ENV" | head -n 1)
+  if [ -n "$FEED_TOKEN" ]; then
+    printf '\n<IfModule mod_env.c>\n  SetEnv SALWA_FEED_TOKEN "%s"\n</IfModule>\n' "$FEED_TOKEN" >> "$BASE/public/.htaccess"
+  fi
+fi
+
 chmod 755 "$BASE/public" "$BASE/app" "$BASE/scripts"
 chmod 750 "$BASE/private"
 php -l "$BASE/public/index.php" >/dev/null
