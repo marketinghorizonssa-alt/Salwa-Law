@@ -13,7 +13,7 @@ function env_value(string $key, ?string $default = null): ?string {
 
 function site_config(): array {
     $siteUrl = rtrim((string) env_value('SALWA_SITE_URL', 'https://salwalaw.hositee.com'), '/');
-    $review = strtolower((string) env_value('SALWA_REVIEW_MODE', 'true')) !== 'false';
+    $review = strtolower((string) env_value('SALWA_REVIEW_MODE', 'false')) !== 'false';
     return [
         'site_url' => $siteUrl,
         'review_mode' => $review,
