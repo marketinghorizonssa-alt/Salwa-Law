@@ -1,0 +1,27 @@
+# Salwa Ahmed Law
+
+> Official website for Salwa Ahmed, a Saudi lawyer providing remote legal consultation and related legal services across Saudi Arabia.
+
+## Primary pages
+
+- [Home](https://salwalaw.hositee.com/): General legal consultation and service overview.
+- [Legal Consultation](https://salwalaw.hositee.com/استشارات-قانونية/): Initial legal consultation requests.
+- [Contracts](https://salwalaw.hositee.com/محامي-عقود/): Contract review and contract-related legal consultation.
+- [Labor Law](https://salwalaw.hositee.com/محامي-قضايا-عمالية/): Saudi labor-law related consultation and case review.
+- [Personal Status](https://salwalaw.hositee.com/محامي-احوال-شخصية/): Personal-status legal consultation.
+- [Intellectual Property](https://salwalaw.hositee.com/ملكية-فكرية/): Intellectual-property consultation and dispute-prevention guidance.
+- [Privacy Policy](https://salwalaw.hositee.com/سياسة-الخصوصية/): Data collection and privacy information.
+
+## Primary action
+
+Each service page contains a structured legal-consultation request form. The form collects the requester's name, phone number, requested service, optional case summary, and consent to use the submitted data for follow-up. Successful submissions are acknowledged only after durable server-side storage.
+
+## Contact
+
+The website provides direct phone and WhatsApp contact options. Services are presented as remote services available across Saudi Arabia; no physical-office location is claimed on this website.
+
+## Important notes
+
+- Website content is informational and does not guarantee any legal outcome.
+- Sending a form does not by itself mean a matter or case has been accepted.
+- Government and professional entities shown on the website are displayed as relevant regulatory or professional references and do not imply partnership or additional endorsement.
