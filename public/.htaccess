@@ -4,6 +4,9 @@ RewriteEngine On
 <Files ".salwa-feed-token">
   Require all denied
 </Files>
+<Files "runtime-config.php">
+  Require all denied
+</Files>
 
 RewriteCond %{REQUEST_FILENAME} -f [OR]
 RewriteCond %{REQUEST_FILENAME} -d
