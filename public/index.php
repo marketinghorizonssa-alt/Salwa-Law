@@ -21,7 +21,8 @@ if ($path === '/api/lead/') handle_lead_submission();
 if ($path === '/api/leads.csv/') handle_lead_feed();
 if ($path === '/healthz/') {
     header('Content-Type: application/json; charset=utf-8');
-    echo json_encode(['ok'=>true,'service'=>'salwa-law-site','build'=>BUILD_ID,'review_mode'=>$cfg['review_mode'],'gtm_configured'=>$cfg['gtm_id'] !== ''], JSON_UNESCAPED_UNICODE|JSON_UNESCAPED_SLASHES); exit;
+    $deployedCommit = is_file(dirname(__DIR__) . '/.deployed-commit') ? trim((string)file_get_contents(dirname(__DIR__) . '/.deployed-commit')) : '';
+    echo json_encode(['ok'=>true,'service'=>'salwa-law-site','build'=>BUILD_ID,'git_commit'=>$deployedCommit,'review_mode'=>$cfg['review_mode'],'gtm_configured'=>$cfg['gtm_id'] !== ''], JSON_UNESCAPED_UNICODE|JSON_UNESCAPED_SLASHES); exit;
 }
 if ($path === '/robots.txt/') {
     header('Content-Type: text/plain; charset=utf-8');
