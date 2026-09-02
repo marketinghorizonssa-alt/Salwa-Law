@@ -3,17 +3,24 @@ declare(strict_types=1);
 
 /**
  * Load server-only runtime secrets before the public application config.
- * The preferred secret file lives in the document root only because this
- * Hostinger PHP runtime does not expose sibling private files reliably.
- * Apache blocks direct HTTP access to the dotfile in .htaccess.
+ * On this Hostinger runtime, a protected PHP config file inside the document
+ * root is the most reliable source. Apache denies direct HTTP access to it.
  */
 function bootstrap_runtime_secrets(): void {
     $baseDir = dirname(__DIR__);
     $token = '';
 
-    $protectedPublicToken = $baseDir . '/public/.salwa-feed-token';
-    if (is_file($protectedPublicToken) && is_readable($protectedPublicToken)) {
-        $token = trim((string) file_get_contents($protectedPublicToken));
+    $protectedPhpConfig = $baseDir . '/public/runtime-config.php';
+    if (is_file($protectedPhpConfig) && is_readable($protectedPhpConfig)) {
+        $data = require $protectedPhpConfig;
+        if (is_array($data)) $token = trim((string)($data['feed_token'] ?? ''));
+    }
+
+    if ($token === '') {
+        $protectedPublicToken = $baseDir . '/public/.salwa-feed-token';
+        if (is_file($protectedPublicToken) && is_readable($protectedPublicToken)) {
+            $token = trim((string) file_get_contents($protectedPublicToken));
+        }
     }
 
     if ($token === '') {
