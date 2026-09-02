@@ -39,16 +39,19 @@ function enhance_site_html(string $html, string $path): string {
     };
 
     $heroPreload = $heroAsset !== '' ? '<link rel="preload" as="image" type="image/svg+xml" fetchpriority="high" href="'.$heroAsset.'">' : '';
-    $assets = '<link rel="icon" type="image/svg+xml" href="/assets/favicon.svg?v=20260902-perf1">'
+    $cssPath = dirname(__DIR__) . '/public/assets/site.bundle.css';
+    $css = is_file($cssPath) && is_readable($cssPath) ? (string)file_get_contents($cssPath) : '';
+    $cssDelivery = $css !== '' ? '<style>'.$css.'</style>' : '<link rel="stylesheet" href="/assets/site.bundle.css?v=20260902-perf2">';
+    $assets = '<link rel="icon" type="image/svg+xml" href="/assets/favicon.svg?v=20260902-perf2">'
         . '<link rel="preload" href="/assets/fonts/noto-kufi-arabic-arabic.woff2" as="font" type="font/woff2" crossorigin>'
         . $heroPreload
-        . '<link rel="stylesheet" href="/assets/site.bundle.css?v=20260902-perf1">';
+        . $cssDelivery;
     $html = str_replace('</head>', $assets.'</head>', $html);
     $html = str_replace('<body class="', '<body class="visual-v4 ', $html);
     if (str_contains($html, '<body>')) $html = str_replace('<body>', '<body class="visual-v4">', $html);
 
-    $html = str_replace('/assets/logo-white.svg', '/assets/logo-header.svg?v=20260902-perf1', $html);
-    $html = str_replace('/assets/site.js"', '/assets/site.js?v=20260902-perf1"', $html);
+    $html = str_replace('/assets/logo-white.svg', '/assets/logo-header.svg?v=20260902-perf2', $html);
+    $html = str_replace('/assets/site.js"', '/assets/site.js?v=20260902-perf2"', $html);
 
     if (str_contains($html, 'class="authority-band"')) {
         $html = preg_replace('#<section class="authority-band".*?</section>#s', visual_v4_authority_html($path), $html, 1) ?? $html;
