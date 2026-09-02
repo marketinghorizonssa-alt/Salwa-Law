@@ -1,13 +1,8 @@
-/* Salwa Ahmed Law — visual v5. Local SVG hero art, high-contrast branding, zero JS changes. */
 .visual-v4{font-family:"Noto Kufi Arabic","Segoe UI",Tahoma,Arial,sans-serif}
 .visual-v4 h1,.visual-v4 h2,.visual-v4 h3,.visual-v4 .nav-cta,.visual-v4 .lead-form button,.visual-v4 summary{font-family:inherit}
-
-/* Header: make the client mark readable on navy without changing the header palette. */
 .visual-v4 .brand{width:205px;height:68px;overflow:visible}
 .visual-v4 .brand img{width:188px;height:66px;object-fit:contain;filter:drop-shadow(0 5px 13px rgba(0,0,0,.16))}
 .visual-v4 .site-header{background:linear-gradient(90deg,#021923,#052c3d 52%,#021923);border-bottom-color:rgba(225,197,107,.18)}
-
-/* Hero: local vector art sits on the copy side (right), never behind the white form. */
 .visual-v4 .hero{background-color:#041f2d;background-repeat:no-repeat;background-size:cover,min(44vw,650px) auto;background-position:center,right 1.5% top 42px}
 .visual-v4.page-home .hero{background-image:linear-gradient(90deg,rgba(3,25,36,.99) 0%,rgba(3,25,36,.96) 48%,rgba(3,25,36,.82) 100%),url('/assets/hero-home-v5.svg')}
 .visual-v4.page-lp01 .hero{background-image:linear-gradient(90deg,rgba(3,25,36,.99) 0%,rgba(3,25,36,.96) 48%,rgba(3,25,36,.82) 100%),url('/assets/hero-consult-v5.svg')}
@@ -20,43 +15,33 @@
 .visual-v4 .hero-copy:after{content:"";position:absolute;inset:-24px -16px -22px -24px;z-index:-1;background:radial-gradient(ellipse at 70% 46%,rgba(2,22,31,.34),rgba(2,22,31,0) 70%);pointer-events:none}
 .visual-v4 .hero h1{text-shadow:0 5px 28px rgba(0,0,0,.24)}
 .visual-v4 .form-wrap{position:relative;z-index:4}
-
-/* Improve bidi/readability for international phone input while keeping server normalization unchanged. */
 .visual-v4 input[name="phone"]{direction:ltr;text-align:left}
 .visual-v4 input[name="phone"]::placeholder{direction:ltr;text-align:left}
-
-/* Floating CTAs: compact icon buttons, no font glyph dependency. */
 .visual-v4 .floating-ctas{gap:10px;left:20px;bottom:20px}
 .visual-v4 .floating-ctas a{width:58px;height:58px;padding:0!important;border-radius:50%;display:grid;place-items:center;font-size:0!important;box-shadow:0 14px 34px rgba(0,0,0,.2);border:1px solid rgba(255,255,255,.14);background-repeat:no-repeat;background-position:center;background-size:25px 25px}
 .visual-v4 .floating-ctas .float-call{background-color:#083b52;background-image:url('/assets/icon-phone.svg')}
 .visual-v4 .floating-ctas .float-wa{background-color:#16845c;background-image:url('/assets/icon-whatsapp.svg')}
 .visual-v4 .floating-ctas a:hover{transform:translateY(-2px);filter:brightness(1.06)}
-
-/* Government / professional authority marks, with an always-local fallback under remote official marks. */
-.visual-v4 .authority-logo-box{position:relative;background:#fff;border:1px solid #ece6dc;box-shadow:inset 0 0 0 4px #fff;overflow:hidden}
+.visual-v4 .authority-v4-grid{align-items:stretch}
+.visual-v4 .authority-v4{display:grid;grid-template-columns:116px minmax(0,1fr);align-items:center;gap:16px;min-height:112px;padding:14px 16px;direction:rtl}
+.visual-v4 .authority-v4>div:first-child{grid-column:1;grid-row:1;justify-self:stretch}
+.visual-v4 .authority-copy{grid-column:2;grid-row:1;min-width:0;min-height:64px;display:flex;flex-direction:column;justify-content:center;text-align:right}
+.visual-v4 .authority-copy strong{font-size:12.5px;line-height:1.75;margin:0}
+.visual-v4 .authority-copy small{font-size:9.5px;line-height:1.6;margin-top:3px;color:#78868b}
+.visual-v4 .authority-logo-box,.visual-v4 .authority-mark{width:116px;height:64px;min-width:116px;border-radius:12px}
+.visual-v4 .authority-logo-box{position:relative;background:#fff;border:1px solid #ece6dc;box-shadow:inset 0 0 0 4px #fff;overflow:hidden;display:grid;place-items:center}
 .visual-v4 .authority-logo-dark{background:#0a3041;border-color:#0a3041}
 .visual-v4 .authority-logo-box::before{position:absolute;inset:0;display:grid;place-items:center;font-family:Georgia,"Times New Roman",serif;font-weight:700;letter-spacing:.06em;font-size:16px;z-index:0}
 .visual-v4 .authority-v4-sba .authority-logo-box::before{content:"SBA";color:#e7cb76;background:#0a3041}
 .visual-v4 .authority-v4-hrsd .authority-logo-box::before{content:"HRSD";color:#086b5e;background:#f8fbfa}
 .visual-v4 .authority-v4-saip .authority-logo-box::before{content:"SAIP";color:#2b6d63;background:linear-gradient(135deg,#f7fbfa,#edf7f5);box-shadow:inset 0 0 0 2px rgba(0,161,155,.15)}
 .visual-v4 .authority-logo-box img{position:relative;z-index:2;display:block;max-width:104px;max-height:52px;width:auto;height:auto;object-fit:contain;color:transparent;font-size:0;background:transparent}
-.visual-v4 .authority-v4-hrsd .authority-logo-box{min-width:122px}
-.visual-v4 .authority-v4-hrsd .authority-logo-box img{max-width:112px;max-height:48px}
-.visual-v4 .authority-v4-saip .authority-logo-box img{max-width:106px;max-height:48px}
-.visual-v4 .authority-v4-moj .authority-mark{background:linear-gradient(145deg,#0b614f,#064536);color:#efd379}
-
-/* Slightly tighter visual hierarchy for speed-friendly above-the-fold. */
+.visual-v4 .authority-v4-hrsd .authority-logo-box{min-width:116px}
+.visual-v4 .authority-v4-hrsd .authority-logo-box img{max-width:104px;max-height:46px}
+.visual-v4 .authority-v4-saip .authority-logo-box img{max-width:104px;max-height:46px}
+.visual-v4 .authority-v4-moj .authority-mark{display:grid;place-items:center;background:linear-gradient(145deg,#0b614f,#064536);color:#efd379;font-size:31px;box-shadow:inset 0 0 0 1px rgba(255,255,255,.1)}
 .visual-v4 .lead-form{box-shadow:0 30px 70px rgba(0,0,0,.22)}
 .visual-v4 .cards article,.visual-v4 .faq details{transition:transform .18s ease,box-shadow .18s ease}
-
-@media(max-width:900px){
-  .visual-v4 .brand{width:156px;height:58px}.visual-v4 .brand img{width:148px;height:54px}
-  .visual-v4 .hero{background-size:cover,470px auto;background-position:center,right -105px top 50px}
-  .visual-v4 .hero-copy{padding-right:18px}
-}
-@media(max-width:600px){
-  .visual-v4 .hero{background-size:cover,390px auto;background-position:center,right -150px top 54px}
-  .visual-v4 .hero-copy:after{inset:-18px -10px -12px -16px}
-  .visual-v4 .floating-ctas{left:12px;bottom:12px}.visual-v4 .floating-ctas a{width:52px;height:52px;background-size:23px 23px}
-}
+@media(max-width:900px){.visual-v4 .brand{width:156px;height:58px}.visual-v4 .brand img{width:148px;height:54px}.visual-v4 .hero{background-size:cover,470px auto;background-position:center,right -105px top 50px}.visual-v4 .hero-copy{padding-right:18px}}
+@media(max-width:600px){.visual-v4 .hero{background-size:cover,390px auto;background-position:center,right -150px top 54px}.visual-v4 .hero-copy:after{inset:-18px -10px -12px -16px}.visual-v4 .floating-ctas{left:12px;bottom:12px}.visual-v4 .floating-ctas a{width:52px;height:52px;background-size:23px 23px}.visual-v4 .authority-v4{grid-template-columns:96px minmax(0,1fr);gap:12px;min-height:102px;padding:12px}.visual-v4 .authority-logo-box,.visual-v4 .authority-mark,.visual-v4 .authority-v4-hrsd .authority-logo-box{width:96px;min-width:96px;height:58px}.visual-v4 .authority-logo-box img{max-width:86px;max-height:46px}.visual-v4 .authority-copy{min-height:58px}.visual-v4 .authority-copy strong{font-size:12px}}
 @media(prefers-reduced-motion:reduce){.visual-v4 .floating-ctas a,.visual-v4 .cards article,.visual-v4 .faq details{transition:none}}
