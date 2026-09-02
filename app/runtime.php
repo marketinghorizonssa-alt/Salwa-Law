@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 /**
  * Load server-only runtime secrets before the public application config.
- * The preferred persistent fallback stores one metadata record inside the
+ * The preferred persistent fallback stores runtime metadata inside the
  * existing private lead JSONL store, which this Hostinger runtime preserves.
  */
 function bootstrap_runtime_secrets(): void {
@@ -24,13 +24,9 @@ function bootstrap_runtime_secrets(): void {
                     if (flock($handle, LOCK_SH)) {
                         while (($line = fgets($handle)) !== false) {
                             $row = json_decode(trim($line), true);
-                            if (is_array($row) && ($row['_type'] ?? '') === 'runtime_config') {
-                                $candidate = trim((string)($row['feed_token'] ?? ''));
-                                if (preg_match('/^[a-f0-9]{48}$/', $candidate)) {
-                                    $token = $candidate;
-                                    break;
-                                }
-                            }
+                            if (!is_array($row) || ($row['_type'] ?? '') !== 'runtime_config') continue;
+                            $candidate = trim((string)($row['feed_token'] ?? ''));
+                            if (preg_match('/^[a-f0-9]{48}$/', $candidate)) $token = $candidate;
                         }
                         flock($handle, LOCK_UN);
                     }
