@@ -10,7 +10,6 @@ cleanup(){ rm -rf "$TMP"; }
 trap cleanup EXIT INT TERM
 mkdir -p "$TMP" "$BASE/private"
 
-# Preserve the server-only runtime config across public directory replacement.
 if [ -f "$BASE/public/runtime-config.php" ]; then
   cp "$BASE/public/runtime-config.php" "$RUNTIME_BACKUP"
 fi
