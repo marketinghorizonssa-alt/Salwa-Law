@@ -1,0 +1,4 @@
+/private/*
+!/private/.gitkeep
+.env
+.DS_Store
