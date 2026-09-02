@@ -5,7 +5,7 @@ function base_head(string $title, string $description, string $path): string {
     $cfg = site_config();
     $canonical = absolute_url($path);
     $gtm = $cfg['gtm_id'] !== '' ? "<script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src='https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);})(window,document,'script','dataLayer','" . esc($cfg['gtm_id']) . "');</script>" : '';
-    return '<!doctype html><html lang="ar" dir="rtl"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>'.esc($title).'</title><meta name="description" content="'.esc($description).'"><link rel="canonical" href="'.esc($canonical).'"><meta property="og:type" content="website"><meta property="og:locale" content="ar_SA"><meta property="og:title" content="'.esc($title).'"><meta property="og:description" content="'.esc($description).'"><meta property="og:url" content="'.esc($canonical).'"><meta property="og:image" content="'.esc($cfg['site_url']).'/assets/logo-dark.png"><meta name="theme-color" content="#06283A"><link rel="stylesheet" href="/assets/site.css">'.$gtm.'</head>';
+    return '<!doctype html><html lang="ar" dir="rtl"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>'.esc($title).'</title><meta name="description" content="'.esc($description).'"><link rel="canonical" href="'.esc($canonical).'"><meta property="og:type" content="website"><meta property="og:locale" content="ar_SA"><meta property="og:title" content="'.esc($title).'"><meta property="og:description" content="'.esc($description).'"><meta property="og:url" content="'.esc($canonical).'"><meta property="og:image" content="'.esc($cfg['site_url']).'/assets/logo-dark.svg"><meta name="theme-color" content="#06283A"><link rel="stylesheet" href="/assets/site.css">'.$gtm.'</head>';
 }
 
 function schema_json(array $page): string {
@@ -45,7 +45,7 @@ function schema_json(array $page): string {
 }
 
 function nav_html(): string {
-    return '<header class="site-header"><div class="wrap nav"><a class="brand" href="/" aria-label="الرئيسية"><img src="/assets/logo-white.png" width="160" height="160" alt="سلوى أحمد"></a><nav aria-label="التنقل الرئيسي"><a href="/استشارات-قانونية/">الاستشارات</a><a href="/محامي-عقود/">العقود</a><a href="/محامي-قضايا-عمالية/">العمل</a><a href="/محامي-احوال-شخصية/">الأحوال الشخصية</a><a href="/ملكية-فكرية/">الملكية الفكرية</a></nav><a class="nav-cta" href="#lead-form">اطلب تواصلًا</a></div></header>';
+    return '<header class="site-header"><div class="wrap nav"><a class="brand" href="/" aria-label="الرئيسية"><img src="/assets/logo-white.svg" width="160" height="160" alt="سلوى أحمد"></a><nav aria-label="التنقل الرئيسي"><a href="/استشارات-قانونية/">الاستشارات</a><a href="/محامي-عقود/">العقود</a><a href="/محامي-قضايا-عمالية/">العمل</a><a href="/محامي-احوال-شخصية/">الأحوال الشخصية</a><a href="/ملكية-فكرية/">الملكية الفكرية</a></nav><a class="nav-cta" href="#lead-form">اطلب تواصلًا</a></div></header>';
 }
 
 function form_html(array $page): string {
@@ -65,7 +65,7 @@ function form_html(array $page): string {
 
 function footer_html(): string {
     $cfg = site_config();
-    return '<footer><div class="wrap footer-grid"><div><img class="footer-logo" src="/assets/logo-white.png" width="180" height="180" alt="سلوى أحمد"><p>خدمات واستشارات قانونية عن بُعد داخل المملكة العربية السعودية.</p></div><div><h3>روابط</h3><a href="/سياسة-الخصوصية/">سياسة الخصوصية</a><a href="'.$cfg['tiktok'].'" target="_blank" rel="noopener">TikTok</a><a href="'.$cfg['linkedin'].'" target="_blank" rel="noopener">LinkedIn</a></div><div><h3>تواصل</h3><a href="tel:'.$cfg['phone_e164'].'"><bdi dir="ltr">'.$cfg['phone_display'].'</bdi></a><a href="https://wa.me/'.$cfg['whatsapp'].'" data-event="click_whatsapp" target="_blank" rel="noopener">واتساب</a></div></div><div class="copyright">© '.date('Y').' سلوى أحمد. جميع الحقوق محفوظة.</div></footer>';
+    return '<footer><div class="wrap footer-grid"><div><img class="footer-logo" src="/assets/logo-white.svg" width="180" height="180" alt="سلوى أحمد"><p>خدمات واستشارات قانونية عن بُعد داخل المملكة العربية السعودية.</p></div><div><h3>روابط</h3><a href="/سياسة-الخصوصية/">سياسة الخصوصية</a><a href="'.$cfg['tiktok'].'" target="_blank" rel="noopener">TikTok</a><a href="'.$cfg['linkedin'].'" target="_blank" rel="noopener">LinkedIn</a></div><div><h3>تواصل</h3><a href="tel:'.$cfg['phone_e164'].'"><bdi dir="ltr">'.$cfg['phone_display'].'</bdi></a><a href="https://wa.me/'.$cfg['whatsapp'].'" data-event="click_whatsapp" target="_blank" rel="noopener">واتساب</a></div></div><div class="copyright">© '.date('Y').' سلوى أحمد. جميع الحقوق محفوظة.</div></footer>';
 }
 
 function floating_ctas(): string {
@@ -88,7 +88,7 @@ function privacy_html(): string {
 
 function thank_you_html(): string {
     $cfg = site_config();
-    return base_head('تم استلام طلبك | سلوى أحمد','تم استلام طلب التواصل.','/شكرا/').'<body><main class="thank-you"><div class="thank-card"><img src="/assets/logo-dark.png" width="140" height="140" alt="سلوى أحمد"><p class="eyebrow">تم الاستلام</p><h1>شكرًا، وصل طلبك بنجاح.</h1><p>يمكنك متابعة التواصل مباشرة عبر واتساب وذكر رقم المرجع الظاهر لديك.</p><a class="primary" href="https://wa.me/'.$cfg['whatsapp'].'" data-event="whatsapp_after_form" target="_blank" rel="noopener">متابعة عبر واتساب</a><a class="back" href="/">العودة للرئيسية</a></div></main><script src="/assets/site.js" defer></script></body></html>';
+    return base_head('تم استلام طلبك | سلوى أحمد','تم استلام طلب التواصل.','/شكرا/').'<body><main class="thank-you"><div class="thank-card"><img src="/assets/logo-dark.svg" width="140" height="140" alt="سلوى أحمد"><p class="eyebrow">تم الاستلام</p><h1>شكرًا، وصل طلبك بنجاح.</h1><p>يمكنك متابعة التواصل مباشرة عبر واتساب وذكر رقم المرجع الظاهر لديك.</p><a class="primary" href="https://wa.me/'.$cfg['whatsapp'].'" data-event="whatsapp_after_form" target="_blank" rel="noopener">متابعة عبر واتساب</a><a class="back" href="/">العودة للرئيسية</a></div></main><script src="/assets/site.js" defer></script></body></html>';
 }
 
 function not_found_html(): string {
