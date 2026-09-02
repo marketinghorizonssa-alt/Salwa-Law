@@ -27,7 +27,7 @@ function enhance_site_html(string $html, string $path): string {
     $assets = '<link rel="icon" type="image/svg+xml" href="/assets/favicon.svg">'
         . '<link href="https://fonts.googleapis.com/css2?family=Noto+Kufi+Arabic:wght@400;600;700&display=swap" rel="stylesheet">'
         . '<link rel="stylesheet" href="/assets/visual-v4.css?v=20260902-2">'
-        . '<link rel="stylesheet" href="/assets/visual-v5.css?v=20260902-2">';
+        . '<link rel="stylesheet" href="/assets/visual-v5.css?v=20260902-3">';
     $html = str_replace('</head>', $assets.'</head>', $html);
     $html = str_replace('<body class="', '<body class="visual-v4 ', $html);
     if (str_contains($html, '<body>')) $html = str_replace('<body>', '<body class="visual-v4">', $html);
