@@ -28,8 +28,12 @@ printf '%s\n' "$COMMIT" > "$BASE/.deployed-commit"
 
 if [ -f "$RUNTIME_BACKUP" ]; then
   cp "$RUNTIME_BACKUP" "$BASE/public/runtime-config.php"
-  chmod 640 "$BASE/public/runtime-config.php"
+else
+  FEED_TOKEN=$(php -r 'echo bin2hex(random_bytes(24));')
+  printf '<?php return ["feed_token"=>"%s"];\n' "$FEED_TOKEN" > "$BASE/public/runtime-config.php"
+  printf 'SALWA_FEED_TOKEN:%s\n' "$FEED_TOKEN"
 fi
+chmod 640 "$BASE/public/runtime-config.php"
 
 chmod 755 "$BASE/public" "$BASE/app" "$BASE/scripts"
 chmod 750 "$BASE/private"
