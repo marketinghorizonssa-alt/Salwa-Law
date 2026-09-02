@@ -63,19 +63,19 @@ function text_length(string $value): int {
 }
 
 function normalize_phone(string $input): ?string {
-    $digits = preg_replace('/\D+/', '', $input) ?: '';
+    $raw = trim($input);
+    if ($raw === '') return null;
+    $hasPlus = str_starts_with($raw, '+');
+    $digits = preg_replace('/\D+/', '', $raw) ?: '';
+    if (strlen($digits) < 7 || strlen($digits) > 15) return null;
+
     if (str_starts_with($digits, '00966')) $digits = substr($digits, 2);
-    if (str_starts_with($digits, '966')) {
-        $local = substr($digits, 3);
-    } elseif (str_starts_with($digits, '05')) {
-        $local = substr($digits, 1);
-    } elseif (str_starts_with($digits, '5')) {
-        $local = $digits;
-    } else {
-        return null;
-    }
-    if (!preg_match('/^5\d{8}$/', $local)) return null;
-    return '+966' . $local;
+    if (str_starts_with($digits, '9665') && strlen($digits) === 12) return '+' . $digits;
+    if (str_starts_with($digits, '05') && strlen($digits) === 10) return '+966' . substr($digits, 1);
+    if (str_starts_with($digits, '5') && strlen($digits) === 9) return '+966' . $digits;
+    if (str_starts_with($raw, '00')) return '+' . substr($digits, 2);
+    if ($hasPlus) return '+' . $digits;
+    return $digits;
 }
 
 function json_response(array $payload, int $status = 200): never {
@@ -101,7 +101,7 @@ function handle_lead_submission(): never {
 
     $errors = [];
     if (text_length($name) < 2 || text_length($name) > 100) $errors['name'] = 'الاسم غير مكتمل';
-    if ($phone === null) $errors['phone'] = 'أدخل رقم جوال سعودي صحيح';
+    if ($phone === null) $errors['phone'] = 'أدخل رقم تواصل صحيح بأي صيغة معتادة';
     if (!isset($allowed[$service])) $errors['service'] = 'اختر نوع الخدمة';
     if (text_length($message) > 1600) $errors['message'] = 'الرسالة أطول من الحد المسموح';
     if (!$consent) $errors['consent'] = 'الموافقة مطلوبة لإرسال الطلب';
@@ -145,7 +145,7 @@ function handle_lead_feed(): never {
     $out = fopen('php://output', 'wb');
     fputcsv($out, LEAD_FIELDS);
     $rows = iterator_to_array(stored_leads(), false);
-    usort($rows, static fn(array $a, array $b): int => strcmp((string)($b['created_at'] ?? ''), (string)($a['created_at'] ?? '')));
+    usort($rows, static fn(array $a, array $b): int => strcmp((string)($a['created_at'] ?? ''), (string)($b['created_at'] ?? '')));
     foreach ($rows as $row) {
         fputcsv($out, array_map(static fn(string $field) => $row[$field] ?? '', LEAD_FIELDS));
     }
