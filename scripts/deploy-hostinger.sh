@@ -5,14 +5,14 @@ BASE="$HOME/domains/hositee.com/public_html/salwa-law"
 TMP="$HOME/.salwa-deploy-$$"
 ARCHIVE="$TMP/site.zip"
 SRC="$TMP/src"
-SECRET_BACKUP="$TMP/salwa-feed-token"
+RUNTIME_BACKUP="$TMP/runtime-config.php"
 cleanup(){ rm -rf "$TMP"; }
 trap cleanup EXIT INT TERM
 mkdir -p "$TMP" "$BASE/private"
 
-# Preserve the server-only feed secret across public directory replacement.
-if [ -f "$BASE/public/.salwa-feed-token" ]; then
-  cp "$BASE/public/.salwa-feed-token" "$SECRET_BACKUP"
+# Preserve the server-only runtime config across public directory replacement.
+if [ -f "$BASE/public/runtime-config.php" ]; then
+  cp "$BASE/public/runtime-config.php" "$RUNTIME_BACKUP"
 fi
 
 curl -fsSL "https://github.com/marketinghorizonssa-alt/Salwa-Law/archive/$COMMIT.zip" -o "$ARCHIVE"
@@ -26,9 +26,9 @@ cp -R "$ROOT/scripts" "$BASE/scripts"
 cp "$ROOT/README.md" "$BASE/README.md"
 printf '%s\n' "$COMMIT" > "$BASE/.deployed-commit"
 
-if [ -f "$SECRET_BACKUP" ]; then
-  cp "$SECRET_BACKUP" "$BASE/public/.salwa-feed-token"
-  chmod 640 "$BASE/public/.salwa-feed-token"
+if [ -f "$RUNTIME_BACKUP" ]; then
+  cp "$RUNTIME_BACKUP" "$BASE/public/runtime-config.php"
+  chmod 640 "$BASE/public/runtime-config.php"
 fi
 
 chmod 755 "$BASE/public" "$BASE/app" "$BASE/scripts"
