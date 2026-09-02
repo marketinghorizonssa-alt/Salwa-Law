@@ -13,7 +13,7 @@ header_remove('X-Powered-By');
 header('X-Content-Type-Options: nosniff');
 header('Referrer-Policy: strict-origin-when-cross-origin');
 header('Permissions-Policy: geolocation=(), microphone=(), camera=()');
-header("Content-Security-Policy: default-src 'self'; img-src 'self' data: https://sba.gov.sa https://www.hrsd.gov.sa https://saip.gov.sa; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; script-src 'self' https://www.googletagmanager.com 'unsafe-inline'; connect-src 'self' https://www.google-analytics.com https://region1.google-analytics.com https://www.googleadservices.com https://px.ads.linkedin.com; frame-src https://www.googletagmanager.com; base-uri 'self'; form-action 'self'; frame-ancestors 'self'");
+header("Content-Security-Policy: default-src 'self'; img-src 'self' data: https://sba.gov.sa https://www.hrsd.gov.sa https://saip.gov.sa https://www.saip.gov.sa; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; script-src 'self' https://www.googletagmanager.com 'unsafe-inline'; connect-src 'self' https://www.google-analytics.com https://region1.google-analytics.com https://www.googleadservices.com https://px.ads.linkedin.com; frame-src https://www.googletagmanager.com; base-uri 'self'; form-action 'self'; frame-ancestors 'self'");
 if ($cfg['review_mode']) header('X-Robots-Tag: noindex, nofollow');
 
 $rawPath = parse_url((string)($_SERVER['REQUEST_URI'] ?? '/'), PHP_URL_PATH) ?: '/';
@@ -33,12 +33,13 @@ if ($path === '/healthz/') {
         'review_mode'=>$cfg['review_mode'],
         'gtm_configured'=>$cfg['gtm_id'] !== '',
         'feed_configured'=>$cfg['feed_token'] !== '',
-        'visual'=>'v4',
+        'visual'=>'v5',
     ], JSON_UNESCAPED_UNICODE|JSON_UNESCAPED_SLASHES);
     exit;
 }
 if ($path === '/robots.txt/') {
     header('Content-Type: text/plain; charset=utf-8');
+    if ($cfg['review_mode']) header('X-Robots-Tag: noindex, nofollow');
     if ($cfg['review_mode']) echo "User-agent: *\nDisallow: /\n";
     else echo "User-agent: Google-InspectionTool\nDisallow:\n\nUser-agent: Googlebot\nDisallow:\n\nUser-agent: *\nDisallow:\n\nSitemap: {$cfg['site_url']}/sitemap.xml\n";
     exit;
