@@ -6,10 +6,22 @@ declare(strict_types=1);
  * Secrets stay outside the document root and are never committed to GitHub.
  */
 function bootstrap_runtime_secrets(): void {
-    $tokenPath = dirname(__DIR__) . '/private/feed-token.txt';
-    if (!is_file($tokenPath) || !is_readable($tokenPath)) return;
+    $privateDir = dirname(__DIR__) . '/private';
+    $token = '';
 
-    $token = trim((string) file_get_contents($tokenPath));
+    $jsonPath = $privateDir . '/config.json';
+    if (is_file($jsonPath) && is_readable($jsonPath)) {
+        $data = json_decode((string) file_get_contents($jsonPath), true);
+        if (is_array($data)) $token = trim((string)($data['feed_token'] ?? ''));
+    }
+
+    if ($token === '') {
+        $tokenPath = $privateDir . '/feed-token.txt';
+        if (is_file($tokenPath) && is_readable($tokenPath)) {
+            $token = trim((string) file_get_contents($tokenPath));
+        }
+    }
+
     if ($token === '') return;
 
     putenv('SALWA_FEED_TOKEN=' . $token);
