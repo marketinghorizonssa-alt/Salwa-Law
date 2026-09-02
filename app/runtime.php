@@ -1,11 +1,6 @@
 <?php
 declare(strict_types=1);
 
-/**
- * Load server-only runtime secrets before the public application config.
- * The preferred persistent fallback stores runtime metadata inside the
- * existing private lead JSONL store, which this Hostinger runtime preserves.
- */
 function bootstrap_runtime_secrets(): void {
     $baseDir = dirname(__DIR__);
     $token = trim((string)(
@@ -37,7 +32,6 @@ function bootstrap_runtime_secrets(): void {
         }
     }
 
-    // Legacy fallbacks kept for portability; they are not required on Hostinger.
     if ($token === '') {
         $protectedPhpConfig = $baseDir . '/public/runtime-config.php';
         if (is_file($protectedPhpConfig) && is_readable($protectedPhpConfig)) {
