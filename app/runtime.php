@@ -4,11 +4,16 @@ declare(strict_types=1);
 /**
  * Load server-only runtime secrets before the public application config.
  * Hostinger/Apache may expose SetEnv variables through $_SERVER rather than
- * getenv(), so bridge that value into the PHP process first.
+ * getenv(). Internal rewrites can prefix them with REDIRECT_.
  */
 function bootstrap_runtime_secrets(): void {
     $baseDir = dirname(__DIR__);
-    $token = trim((string)($_SERVER['SALWA_FEED_TOKEN'] ?? $_ENV['SALWA_FEED_TOKEN'] ?? ''));
+    $token = trim((string)(
+        $_SERVER['SALWA_FEED_TOKEN']
+        ?? $_SERVER['REDIRECT_SALWA_FEED_TOKEN']
+        ?? $_ENV['SALWA_FEED_TOKEN']
+        ?? ''
+    ));
 
     if ($token === '') {
         $protectedPhpConfig = $baseDir . '/public/runtime-config.php';
