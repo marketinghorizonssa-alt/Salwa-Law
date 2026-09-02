@@ -6,6 +6,7 @@ require_once dirname(__DIR__) . '/app/config.php';
 require_once dirname(__DIR__) . '/app/helpers.php';
 require_once dirname(__DIR__) . '/app/leads.php';
 require_once dirname(__DIR__) . '/app/views.php';
+require_once dirname(__DIR__) . '/app/enhancements.php';
 
 $cfg = site_config();
 header_remove('X-Powered-By');
@@ -32,6 +33,7 @@ if ($path === '/healthz/') {
         'review_mode'=>$cfg['review_mode'],
         'gtm_configured'=>$cfg['gtm_id'] !== '',
         'feed_configured'=>$cfg['feed_token'] !== '',
+        'visual'=>'v4',
     ], JSON_UNESCAPED_UNICODE|JSON_UNESCAPED_SLASHES);
     exit;
 }
@@ -48,8 +50,8 @@ if ($path === '/sitemap.xml/') {
     foreach ($urls as $u) echo '  <url><loc>'.htmlspecialchars(absolute_url($u),ENT_XML1|ENT_QUOTES,'UTF-8').'</loc><lastmod>2026-09-02</lastmod></url>' . "\n";
     echo '</urlset>'; exit;
 }
-if ($path === '/سياسة-الخصوصية/') { echo privacy_html(); exit; }
-if ($path === '/شكرا/') { echo thank_you_html(); exit; }
+if ($path === '/سياسة-الخصوصية/') { echo enhance_site_html(privacy_html(), $path); exit; }
+if ($path === '/شكرا/') { echo enhance_site_html(thank_you_html(), $path); exit; }
 $catalog = page_catalog();
-if (isset($catalog[$path])) { echo page_html($catalog[$path]); exit; }
-http_response_code(404); echo not_found_html();
+if (isset($catalog[$path])) { echo enhance_site_html(page_html($catalog[$path]), $path); exit; }
+http_response_code(404); echo enhance_site_html(not_found_html(), $path);
