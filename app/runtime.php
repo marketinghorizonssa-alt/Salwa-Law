@@ -54,4 +54,13 @@ function bootstrap_runtime_secrets(): void {
     $_SERVER['SALWA_FEED_TOKEN'] = $token;
 }
 
+function bootstrap_public_tracking_config(): void {
+    $gtm = trim((string)(getenv('SALWA_GTM_ID') ?: ($_SERVER['SALWA_GTM_ID'] ?? $_ENV['SALWA_GTM_ID'] ?? '')));
+    if ($gtm === '') $gtm = 'GTM-WTJF998D';
+    putenv('SALWA_GTM_ID=' . $gtm);
+    $_ENV['SALWA_GTM_ID'] = $gtm;
+    $_SERVER['SALWA_GTM_ID'] = $gtm;
+}
+
 bootstrap_runtime_secrets();
+bootstrap_public_tracking_config();
