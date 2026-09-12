@@ -20,7 +20,9 @@ $rawPath = parse_url((string)($_SERVER['REQUEST_URI'] ?? '/'), PHP_URL_PATH) ?: 
 $path = normalize_path($rawPath);
 
 if ($path === '/api/lead/') handle_lead_submission();
+if ($path === '/api/wa-click/') handle_wa_click();
 if ($path === '/api/leads.csv/' || $path === '/api/leads-feed/') handle_lead_feed();
+if ($path === '/api/wa-clicks.csv/' || $path === '/api/wa-clicks-feed/') handle_wa_click_feed();
 if ($path === '/healthz/') {
     header('Content-Type: application/json; charset=utf-8');
     header('Cache-Control: no-store');
