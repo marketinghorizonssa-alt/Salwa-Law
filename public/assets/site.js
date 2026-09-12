@@ -9,7 +9,22 @@
     window.dataLayer.push({event,...detail});
   };
 
-  document.addEventListener('click',(e)=>{
+  const attributionBody=()=>{
+    const form=document.querySelector('#lead-form');
+    const body={
+      landing_page_id:form&&form.dataset?form.dataset.pageId||'':'',
+      landing_url:location.href.split('#')[0],
+      page_path:location.pathname,
+      referrer:document.referrer,
+      session_id:sessionStorage.getItem('salwa_session_id')||''
+    };
+    for(const k of keys)body[k]=sessionStorage.getItem('salwa_'+k)||'';
+    return body;
+  };
+
+  const isWhatsAppHref=(href)=>/^(https?:\/\/)?(wa\.me|api\.whatsapp\.com|www\.whatsapp\.com|whatsapp\.com)\//i.test(href);
+
+  document.addEventListener('click',async(e)=>{
     const a=e.target.closest&&e.target.closest('a[href]');
     if(!a)return;
     const href=String(a.getAttribute('href')||'').trim();
@@ -19,9 +34,34 @@
       pushEvent('click_call',common);
       return;
     }
-    if(declared==='click_whatsapp'||declared==='whatsapp_after_form'||/^(https?:\/\/)?(wa\.me|api\.whatsapp\.com|www\.whatsapp\.com|whatsapp\.com)\//i.test(href)){
-      pushEvent('click_whatsapp',{...common,source_event:declared||'whatsapp_link'});
+    if(!(declared==='click_whatsapp'||declared==='whatsapp_after_form'||isWhatsAppHref(href)))return;
+
+    pushEvent('click_whatsapp',{...common,source_event:declared||'whatsapp_link'});
+
+    if(e.defaultPrevented||e.button!==0||e.metaKey||e.ctrlKey||e.shiftKey||e.altKey)return;
+    e.preventDefault();
+    const originalHref=a.href||href;
+    const controller=window.AbortController?new AbortController():null;
+    const timer=setTimeout(()=>{if(controller)controller.abort()},1800);
+    try{
+      const r=await fetch('/api/wa-click/',{
+        method:'POST',
+        headers:{'Content-Type':'application/json','Accept':'application/json'},
+        body:JSON.stringify(attributionBody()),
+        keepalive:true,
+        signal:controller?controller.signal:undefined
+      });
+      const data=await r.json();
+      if(r.ok&&data&&data.ok&&data.wa_url){
+        pushEvent('whatsapp_attribution_ready',{wa_ref:data.ref||'',page_path:location.pathname});
+        location.assign(data.wa_url);
+        return;
+      }
+    }catch(_){
+    }finally{
+      clearTimeout(timer);
     }
+    location.assign(originalHref);
   },true);
 
   const form=document.querySelector('#lead-form');
